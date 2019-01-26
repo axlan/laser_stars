@@ -13,15 +13,15 @@ class SimulatorDriver():
         self.is_on = False
 
     def move_to(self, x, y):
+        x_pos = int(x * self.width)
+        y_pos = int(y * self.width)
         if self.is_on:
-            x_pos = int(x * self.width)
-            y_pos = int(y * self.width)
             # Draw a diagonal blue line with thickness of 5 px
             cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
-            self.cur_x = x_pos
-            self.cur_y = y_pos
             cv2.imshow('image',self.img)
             cv2.waitKey(1)
+        self.cur_x = x_pos
+        self.cur_y = y_pos
 
     def set_power(self, is_on):
         self.is_on = is_on
