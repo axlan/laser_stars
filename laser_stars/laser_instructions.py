@@ -53,13 +53,13 @@ def read_instr(line):
 
 def run_test():
     instrs = [ SetPower(False),
-               MoveTo(0, 0, .1),
+               MoveTo(0, 0, .3),
                Wait(1),
                SetPower(True),
-               MoveTo(0, 1, .1),
-               MoveTo(1, 1, .1),
-               MoveTo(1, 0, .1),
-               MoveTo(0, 0, .1),
+               MoveTo(0, 1, .3),
+               MoveTo(1, 1, .3),
+               MoveTo(1, 0, .3),
+               MoveTo(0, 0, .3),
                Wait(1),
                SetPower(False)]
 

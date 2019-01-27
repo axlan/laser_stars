@@ -7,11 +7,14 @@ from laser_stars.drivers.arduino_roll_pitch import ArduinoRollPitchDriver
 
 #file_name = 'out/line_draw.mvs'
 file_name = 'out/test.mvs'
+port = "COM6"
+#port = None
+
 
 with open(file_name) as fd:
     instrs = [ read_instr(line) for line in fd.readlines() ]
 
 #with SimulatorDriver(512, 512) as driver:
-with ArduinoRollPitchDriver(90, 90, 10, 10) as driver:
+with ArduinoRollPitchDriver(45, 20, 5, 5, port) as driver:
     ctrl = Mark1Controller(driver, .001)
     ctrl.run(instrs)

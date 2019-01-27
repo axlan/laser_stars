@@ -1,6 +1,7 @@
 
 import serial
 import math
+import time
 
 class ArduinoRollPitchDriver():
 
@@ -22,7 +23,10 @@ class ArduinoRollPitchDriver():
         self.h_width = math.tan(math.radians(pitch_max))
         self.h_height = math.tan(math.radians(roll_max))
         if com_port:
-            self.ser = serial.Serial(com_port, baudrate=115200)
+            self.ser = serial.Serial(com_port, baudrate=115200, timeout=3)
+            header = self.ser.read()
+            assert len(header) == 1
+            assert header[0] == 255
         else:
             self.ser = None
 
