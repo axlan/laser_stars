@@ -1,19 +1,60 @@
 
 import serial
+import math
 
 class ArduinoRollPitchDriver():
-    def __init__(self, roll_0, roll_1, pitch_0, pitch_1, com_port=None):
-        self.roll_0 = roll_0
-        self.roll_1 = roll_1
-        self.pitch_0 = pitch_0
-        self.pitch_1 = pitch_1
+
+    _CMD_ROLL = 100
+    _CMD_PITCH = 101
+    _CMD_POWER = 102
+
+    def __init__(self, roll_offset, pitch_offset, roll_max, pitch_max, com_port=None):
+        """ roll_offset (int) - servo angle (deg) to align laser straight up
+            pitch_offset (int) - servo angle (deg) to align laser straight up
+            roll_max (int) - max roll angle (deg). Sets scale of image
+            pitch_max (int) - max pitch angle (deg). Sets scale of image
+            com_port - com port for arduino serial
+        """
+        assert roll_max < roll_offset
+        assert pitch_max < pitch_offset
+        self.roll_offset = int(roll_offset)
+        self.pitch_offset = int(pitch_offset)
+        self.h_width = math.tan(math.radians(pitch_max))
+        self.h_height = math.tan(math.radians(roll_max))
         if com_port:
-            self.serial = serial.Serial(com_port)
+            self.ser = serial.Serial(com_port, baudrate=115200)
         else:
-            self.serial = None
+            self.ser = None
+
+    @staticmethod
+    def _calc_angle_offset(val, max_val):
+        is_neg = val < .5
+        distance = abs(val - .5) * max_val * 2
+        angle = round(math.degrees(math.atan2(distance, 1)))
+        if is_neg:
+            angle *= -1
+        return angle
+
 
     def move_to(self, x, y):
-        pass
+        pitch = self._calc_angle_offset(x, self.h_width) + self.pitch_offset
+        roll = self._calc_angle_offset(y, self.h_height) + self.roll_offset
+        self._send_cmd(self._CMD_ROLL, roll)
+        self._send_cmd(self._CMD_PITCH, pitch)
 
-    def set_power(self):
-        pass
+    def set_power(self, is_on):
+        self._send_cmd(self._CMD_POWER, int(is_on))
+
+    def _send_cmd(self, cmd, val):
+        data = bytearray([cmd, val])
+        if self.ser:
+            self.ser.write(data)
+        else:
+            print(int(data[0]), int(data[1]))
+
+    def __enter__(self):
+        return self    
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.ser:
+            self.ser.close()

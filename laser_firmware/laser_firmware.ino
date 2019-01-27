@@ -1,40 +1,37 @@
 
 #include <Servo.h>
 
-Servo yaw_servo;  // side to side
+Servo roll_servo;  // side to side
 Servo pitch_servo; // up down
+
+#define ROLL_PWM_PIN 9
+#define PITCH_PWM_PIN 10
+#define RELAY_PIN 11
+
+#define CMD_ROLL  100
+#define CMD_PITCH 101
+#define CMD_POWER 102
 
 #define BUF_LEN 16
 byte message_buf[BUF_LEN];
 
 void setup() {
-  Serial.begin(9600);
-  //Serial.setTimeout(100*1000);
-  yaw_servo.attach(9);  // attaches the servo on pin 9 to the servo object
-  pitch_servo.attach(10);  // attaches the servo on pin 9 to the servo object
+  Serial.begin(115200);
+  Serial.setTimeout(100);
+  roll_servo.attach(ROLL_PWM_PIN);
+  pitch_servo.attach(PITCH_PWM_PIN);
+  pinMode(RELAY_PIN, OUTPUT); 
 }
 
 void loop() {
-
-    if (Serial.readBytes(message_buf, 2) == 2) {
-      yaw_servo.write(message_buf[0]);
-      pitch_servo.write(message_buf[1]);
-      Serial.println(message_buf[0]);
-      Serial.println(message_buf[1]);
+  if (Serial.readBytes(message_buf, 2) == 2) {
+    switch(message_buf[0]) {
+      case CMD_ROLL: roll_servo.write(message_buf[1]); break;
+      case CMD_PITCH: pitch_servo.write(message_buf[1]); break;
+      case CMD_POWER: digitalWrite(RELAY_PIN, (message_buf[1])?HIGH:LOW); break;
+      default : break; 
     }
-    
-  
-//   int val = Serial.parseInt();
-//   myservo.write(val);
-//   Serial.println(val);
-//    for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-//    // in steps of 1 degree
-//      myservo.write(pos);              // tell servo to go to position in variable 'pos'
-//      delay(150);                       // waits 15ms for the servo to reach the position
-//    }
-//    for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-//      myservo.write(pos);              // tell servo to go to position in variable 'pos'
-//      delay(150);                       // waits 15ms for the servo to reach the position
-//    }
+  } else {
+    Serial.flush()
+  }
 }
-
