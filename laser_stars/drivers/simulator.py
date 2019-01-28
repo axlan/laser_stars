@@ -4,6 +4,7 @@ import cv2
 
 class SimulatorDriver():
     def __init__(self, width, height):
+        self.running = True
         self.width = width
         self.height = height
         # Create a black image
@@ -32,5 +33,6 @@ class SimulatorDriver():
         return self    
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.running = False
         cv2.waitKey(0)
         cv2.destroyAllWindows()
