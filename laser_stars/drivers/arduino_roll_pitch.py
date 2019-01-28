@@ -18,6 +18,7 @@ class ArduinoRollPitchDriver():
         """
         assert roll_max < roll_offset
         assert pitch_max < pitch_offset
+        self.running = True
         self.roll_offset = int(roll_offset)
         self.pitch_offset = int(pitch_offset)
         self.h_width = math.tan(math.radians(pitch_max))
@@ -62,3 +63,4 @@ class ArduinoRollPitchDriver():
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.ser:
             self.ser.close()
+        self.running = False

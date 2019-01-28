@@ -3,6 +3,7 @@ import cv2
 
 
 class SimulatorDriver():
+    _WIN_NAME = "sim_image"
     def __init__(self, width, height):
         self.running = True
         self.width = width
@@ -19,7 +20,7 @@ class SimulatorDriver():
         if self.is_on:
             # Draw a diagonal blue line with thickness of 5 px
             cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
-            cv2.imshow('image',self.img)
+            cv2.imshow(self._WIN_NAME,self.img)
             cv2.waitKey(1)
         self.cur_x = x_pos
         self.cur_y = y_pos
@@ -28,8 +29,8 @@ class SimulatorDriver():
         self.is_on = is_on
 
     def __enter__(self):
-        cv2.namedWindow('image', cv2.WINDOW_NORMAL)
-        cv2.imshow('image',self.img)
+        cv2.namedWindow(self._WIN_NAME, cv2.WINDOW_NORMAL)
+        cv2.imshow(self._WIN_NAME,self.img)
         return self    
 
     def __exit__(self, exc_type, exc_val, exc_tb):

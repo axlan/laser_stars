@@ -8,7 +8,7 @@ from laser_stars.laser_instructions import read_instr
 from laser_stars.controllers.mark1 import Mark1Controller
 from laser_stars.drivers.simulator import SimulatorDriver
 from laser_stars.drivers.arduino_roll_pitch import ArduinoRollPitchDriver
-#from laser_stars.recorders.tracker import TrackerRecorder
+from laser_stars.recorders.tracker import TrackerRecorder
 from laser_stars.recorders.simulator import SimulatorRecorder
 
 DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,
@@ -17,7 +17,7 @@ DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,
 CONTROLLERS = {'mark1': Mark1Controller}
 
 RECORDER = {'simulator': SimulatorRecorder,
-            'tracker': Mark1Controller}
+            'tracker': TrackerRecorder}
 
 if len(sys.argv) != 3:
     print(f'Usage: {sys.argv[0]} CONFIG_JSON_FILE MOVEMENT_FILE')
@@ -47,3 +47,6 @@ with DRIVERS[config['driver']](**config['driver_args']) as driver:
         record_thread.start()
     ctrl = CONTROLLERS[config['controller']](driver, **config['controller_args'])
     ctrl.run(instrs)
+
+if 'recorder' in config:
+    record_thread.join()
