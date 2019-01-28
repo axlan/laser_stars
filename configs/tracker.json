@@ -1,0 +1,22 @@
+{
+    "driver": "arduino_roll_pitch",
+    "driver_args": {
+        "roll_offset": 45,
+        "pitch_offset": 20,
+        "roll_max": 10,
+        "pitch_max": 10,
+        "com_port": "COM6"
+    },
+    "controller": "mark1",
+    "controller_args": {
+        "update_rate": 0.001
+    },
+    "recorder": "tracker",
+    "recorder_args": {
+        "device_num": 0,
+        "cam_width": 1280,
+        "cam_height": 720,
+        "show": true,
+        "outfile": "out/tracker.avi"
+    }
+}

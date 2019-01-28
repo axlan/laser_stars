@@ -5,7 +5,7 @@ import numpy
 
 class TrackerRecorder(object):
 
-    def __init__(self, driver, video_file=None, cam_width=640, cam_height=480, hue_min=20, hue_max=160,
+    def __init__(self, driver, video_file=None, device_num=0, cam_width=640, cam_height=480, hue_min=20, hue_max=160,
                  sat_min=100, sat_max=255, val_min=200, val_max=256, outfile='out/tracker.avi', show=False):
         """
         * ``cam_width`` x ``cam_height`` -- This should be the size of the
@@ -31,6 +31,7 @@ class TrackerRecorder(object):
         self.driver = driver
         self.outfile = outfile
         self.show = show
+        self.device_num = device_num
 
         self.capture = None  # camera capture device
         self.channels = {
@@ -44,7 +45,7 @@ class TrackerRecorder(object):
         self.trail = numpy.zeros((self.cam_height, self.cam_width, 3),
                                  numpy.uint8)
 
-    def setup_camera_capture(self, device_num=0):
+    def setup_camera_capture(self):
         """Perform camera setup for the device number (default device = 0).
         Returns a reference to the camera Capture object.
         """
@@ -57,7 +58,7 @@ class TrackerRecorder(object):
                 sys.exit(1)
         else:
             try:
-                device = int(device_num)
+                device = int(self.device_num)
                 sys.stdout.write("Using Camera Device: {0}\n".format(device))
             except (IndexError, ValueError):
                 # assume we want the 1st device
