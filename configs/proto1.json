@@ -1,0 +1,14 @@
+{
+    "driver": "arduino_roll_pitch",
+    "driver_args": {
+        "roll_offset": 45,
+        "pitch_offset": 20,
+        "roll_max": 10,
+        "pitch_max": 10,
+        "com_port": null
+    },
+    "controller": "mark1",
+    "controller_args": {
+        "update_rate": 0.001
+    }
+}

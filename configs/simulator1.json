@@ -1,0 +1,11 @@
+{
+    "driver": "simulator",
+    "driver_args": {
+        "width": 512,
+        "height": 512
+    },
+    "controller": "mark1",
+    "controller_args": {
+        "update_rate": 0.001
+    }
+}

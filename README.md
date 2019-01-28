@@ -1,9 +1,9 @@
 # laser_stars
 Project for drawing on glow in the dark stars with a laser
 
-Tool for drawing simple patterns: `python3 -m laser_stars.line_drawer`
+Tool for drawing simple patterns: `python3 -m laser_stars.line_drawer` this saves on exit to out/line_draw.mvs
 
-Tool for running pattern file: `python3 -m laser_stars.run_controller`
+Tool for running pattern file: `python3 -m laser_stars.run_controller configs/simulator1.json movements/heart.mvs`
 
 ## Dependancies
 `sudo apt-get install python3-opencv`
