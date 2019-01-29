@@ -107,10 +107,6 @@ class TrackerRecorder(object):
             cv2.THRESH_BINARY  # type
         )
 
-        if channel == 'hue':
-            # only works for filtering red color because the range for the hue
-            # is split
-            self.channels['hue'] = cv2.bitwise_not(self.channels['hue'])
 
     def track(self, frame, mask):
         """

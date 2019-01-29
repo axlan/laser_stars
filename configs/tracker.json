@@ -13,9 +13,13 @@
     },
     "recorder": "tracker",
     "recorder_args": {
-        "device_num": 0,
+        "device_num": 1,
         "cam_width": 1280,
         "cam_height": 720,
+        "hue_min": 80,
+        "hue_max": 160,
+        "sat_min": 0,
+        "sat_max": 255,
         "show": true,
         "outfile": "out/tracker.avi"
     }
