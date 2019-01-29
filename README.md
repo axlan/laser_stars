@@ -5,6 +5,13 @@ Tool for drawing simple patterns: `python3 -m laser_stars.line_drawer` this save
 
 Tool for running pattern file: `python3 -m laser_stars.run_controller configs/simulator1.json movements/heart.mvs`
 
+## Todo
+ * Improve servo control firmware (jerky movement / servos move one after other / sub-degree resolution)
+ * Add recording mode that uses long exposure like recording instead of tracking line https://www.pyimagesearch.com/2017/08/14/long-exposure-with-opencv-and-python/
+ * Modify hardware for blue laser
+ * Scale and position laser based on vision and markers on ceiling
+ * Light up stars
+
 ## Dependancies
 `sudo apt-get install python3-opencv`
 
