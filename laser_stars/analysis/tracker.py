@@ -3,13 +3,13 @@ import argparse
 import cv2
 import numpy
 
-class TrackerRecorder(object):
+from laser_stars.utils import FPSCheck
 
-    def __init__(self, driver, video_file=None, device_num=0, cam_width=640, cam_height=480, hue_min=20, hue_max=160,
+class TrackerAnalysis(object):
+
+    def __init__(self, cv_loop, hue_min=20, hue_max=160,
                  sat_min=100, sat_max=255, val_min=200, val_max=256, outfile='out/tracker.avi', show=False):
         """
-        * ``cam_width`` x ``cam_height`` -- This should be the size of the
-        image coming from the camera. Default is 640x480.
         HSV color space Threshold values for a RED laser pointer are determined
         by:
         * ``hue_min``, ``hue_max`` -- Min/Max allowed Hue values
@@ -18,22 +18,20 @@ class TrackerRecorder(object):
         If the dot from the laser pointer doesn't fall within these values, it
         will be ignored.
         """
-
-        self.video_file = video_file
-        self.cam_width = cam_width
-        self.cam_height = cam_height
         self.hue_min = hue_min
         self.hue_max = hue_max
         self.sat_min = sat_min
         self.sat_max = sat_max
         self.val_min = val_min
         self.val_max = val_max
-        self.driver = driver
         self.outfile = outfile
         self.show = show
-        self.device_num = device_num
+        FPS = 10
+        self.update_check = FPSCheck(FPS)
+        self.cv_loop = cv_loop
+        if outfile:
+            self.out = cv2.VideoWriter(self.outfile ,cv2.VideoWriter_fourcc(*'XVID'), FPS, (cv_loop.cam_width,cv_loop.cam_height))
 
-        self.capture = None  # camera capture device
         self.channels = {
             'hue': None,
             'saturation': None,
@@ -42,45 +40,9 @@ class TrackerRecorder(object):
         }
 
         self.previous_position = None
-        self.trail = numpy.zeros((self.cam_height, self.cam_width, 3),
+        self.trail = numpy.zeros((cv_loop.cam_height, cv_loop.cam_width, 3),
                                  numpy.uint8)
-
-    def setup_camera_capture(self):
-        """Perform camera setup for the device number (default device = 0).
-        Returns a reference to the camera Capture object.
-        """
-
-        if self.video_file:
-            self.capture = cv2.VideoCapture(self.video_file)
-            # Check if camera opened successfully
-            if (self.capture.isOpened()== False): 
-                print("Error opening video stream or file")
-                sys.exit(1)
-        else:
-            try:
-                device = int(self.device_num)
-                sys.stdout.write("Using Camera Device: {0}\n".format(device))
-            except (IndexError, ValueError):
-                # assume we want the 1st device
-                device = 0
-                sys.stderr.write("Invalid Device. Using default device 0\n")
-
-            # Try to start capturing frames
-            self.capture = cv2.VideoCapture(device)
-            if not self.capture.isOpened():
-                sys.stderr.write("Faled to Open Capture device. Quitting.\n")
-                sys.exit(1)
-
-            # set the wanted image size from the camera
-            self.capture.set(
-                cv2.cv.CV_CAP_PROP_FRAME_WIDTH if cv2.__version__.startswith('2') else cv2.CAP_PROP_FRAME_WIDTH,
-                self.cam_width
-            )
-            self.capture.set(
-                cv2.cv.CV_CAP_PROP_FRAME_HEIGHT if cv2.__version__.startswith('2') else cv2.CAP_PROP_FRAME_HEIGHT,
-                self.cam_height
-            )
-        return self.capture
+        cv_loop.processing_list.append(self.cv_func)
 
     def threshold_image(self, channel):
         if channel == "hue":
@@ -173,22 +135,12 @@ class TrackerRecorder(object):
 
         self.track(frame, self.channels['laser'])
 
-    def run(self):
-        # Set up the camera capture
-        self.setup_camera_capture()
-        out = cv2.VideoWriter(self.outfile ,cv2.VideoWriter_fourcc(*'MJPG'), 10, (self.cam_width,self.cam_height))
-        if self.show:
-            cv2.namedWindow('LaserPointer')
-
-        while self.driver.running:
-            # 1. capture the current image
-            success, frame = self.capture.read()
-            if not success:  # no image captured... end the processing
-                sys.stderr.write("Could not read camera frame. Quitting\n")
-                sys.exit(1)
+    def cv_func(self, frame, is_done):
+        if is_done:
+            self.out.release()
+            return
+        if self.update_check.check():
             self.detect(frame)
-            out.write(frame)
+            self.out.write(frame)
             if self.show:
                 cv2.imshow('LaserPointer', frame)
-                cv2.waitKey(10)
-        out.release()

@@ -9,7 +9,7 @@ class ArduinoRollPitchDriver():
     _CMD_PITCH = 101
     _CMD_POWER = 102
 
-    def __init__(self, roll_offset, pitch_offset, roll_max, pitch_max, com_port=None):
+    def __init__(self, cv_loop, roll_offset, pitch_offset, roll_max, pitch_max, com_port=None, verbose=False):
         """ roll_offset (int) - servo angle (deg) to align laser straight up
             pitch_offset (int) - servo angle (deg) to align laser straight up
             roll_max (int) - max roll angle (deg). Sets scale of image
@@ -23,6 +23,7 @@ class ArduinoRollPitchDriver():
         self.pitch_offset = int(pitch_offset)
         self.h_width = math.tan(math.radians(pitch_max))
         self.h_height = math.tan(math.radians(roll_max))
+        self.verbose = verbose
         if com_port:
             self.ser = serial.Serial(com_port, baudrate=115200, timeout=3)
             header = self.ser.read()
@@ -54,7 +55,7 @@ class ArduinoRollPitchDriver():
         data = bytearray([cmd, val])
         if self.ser:
             self.ser.write(data)
-        else:
+        if self.verbose:
             print(int(data[0]), int(data[1]))
 
     def __enter__(self):

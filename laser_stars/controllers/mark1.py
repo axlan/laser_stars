@@ -1,17 +1,18 @@
 """mark1.py: Most basic laser driver"""
 
 from laser_stars.laser_instructions import MoveTo, SetPower, Wait
-from .utils import dist
+from laser_stars.utils import dist
 
 from datetime import datetime
 import time
 
 class Mark1Controller():
-    def __init__(self, driver, update_rate):
+    def __init__(self, driver, cv_loop, update_rate):
         self.driver = driver
         self.update_rate = update_rate
         self.cur_x = None
         self.cur_y = None
+        self.cv_loop = cv_loop
 
     def run(self, instrs):
         for instr in instrs:

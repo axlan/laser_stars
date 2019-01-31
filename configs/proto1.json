@@ -5,6 +5,7 @@
         "pitch_offset": 20,
         "roll_max": 10,
         "pitch_max": 10,
+        "verbose": true,
         "com_port": null
     },
     "controller": "mark1",

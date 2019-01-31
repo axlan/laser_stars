@@ -18,14 +18,9 @@
     },
     "analysis": [
         {
-            "name": "tracker",
+            "name": "long_exposure",
             "args": {
-                "hue_min": 80,
-                "hue_max": 160,
-                "sat_min": 0,
-                "sat_max": 255,
-                "show": true,
-                "outfile": "out/tracker.avi"
+                "outfile": "out/long_exposure.png"
             }
         }
     ]

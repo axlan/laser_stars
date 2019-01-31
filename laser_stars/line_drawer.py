@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 """constelation_mapper.py: App for creating a display pattern for the laser"""
 
-from laser_stars.controllers.utils import dist
+from laser_stars.utils import dist
 from laser_stars.laser_instructions import MoveTo, SetPower
 
 import pygame
