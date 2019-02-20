@@ -21,6 +21,12 @@ https://github.com/AnumSheraz/OpenCV-laser-tracking-gun
 
 https://github.com/bradmontgomery/python-laser-tracker
 
+Localization with QR codes:
+
+http://www.geduino.org/site/archives/258
+
+https://www.learnopencv.com/barcode-and-qr-code-scanner-using-zbar-and-opencv/
+
 ## Hardware Notes
 
 Laser:
