@@ -50,7 +50,7 @@ class OpenCVLoop(object):
             # Try to start capturing frames
             self.capture = cv2.VideoCapture(device)
             if not self.capture.isOpened():
-                sys.stderr.write("Faled to Open Capture device. Quitting.\n")
+                sys.stderr.write("Failed to Open Capture device. Quitting.\n")
                 sys.exit(1)
 
             # set the wanted image size from the camera

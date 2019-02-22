@@ -10,7 +10,7 @@ from laser_stars.drivers.simulator import SimulatorDriver
 from laser_stars.drivers.arduino_roll_pitch import ArduinoRollPitchDriver
 from laser_stars.analysis.tracker import TrackerAnalysis
 from laser_stars.analysis.long_exposure import LongExposureAnalysis
-from laser_stars.analysis.localisation import LocalizationAnalysis
+from laser_stars.analysis.localization import LocalizationAnalysis
 from laser_stars.opencv_loop import OpenCVLoop
 
 DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,

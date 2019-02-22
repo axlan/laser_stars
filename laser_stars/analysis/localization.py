@@ -10,7 +10,10 @@ from laser_stars.utils import FPSCheck
 
 class LocalizationAnalysis(object):
 
-    def __init__(self, cv_loop, side_len, outfile='out/tracker.avi', show=False):
+    def __init__(self, cv_loop, side_len, star_offset = 138, star_spacing=100, star_count=6,  outfile='out/tracker.avi', show=False):
+        self.star_offset = star_offset
+        self.star_spacing = star_spacing
+        self.star_count = star_count
         self.side_len = side_len
         self.outfile = outfile
         self.show = show
@@ -23,6 +26,7 @@ class LocalizationAnalysis(object):
 
         cv_loop.processing_list.append(self.cv_func)
 
+    @staticmethod
     def order_points(pts):
         # initialzie a list of coordinates that will be ordered
         # such that the first entry in the list is the top-left,
@@ -46,14 +50,14 @@ class LocalizationAnalysis(object):
         # return the ordered coordinates
         return rect
 
-    def get_transform(frame):
+    def get_transform(self, frame):
         decodedObjects: List[pyzbar.Decoded] = pyzbar.decode(frame)
         if len(decodedObjects) != 4:
             return
 
-        pts = np.array([(pt.x, pt.y) for pt in poly for poly in decodedObjects])
+        pts = np.array([(pt.x, pt.y) for obj in decodedObjects for pt in obj.polygon])
         
-        src = order_points(pts)
+        src = self.order_points(pts)
 
         dst = np.array([(0, 0),
                         (self.side_len, 0),
@@ -61,8 +65,19 @@ class LocalizationAnalysis(object):
                         (0, self.side_len),], np.float32)
 
         # compute the perspective transform matrix
-        self.transform = cv2.getPerspectiveTransform(pts, dst)
-        warped = cv2.warpPerspective(im, M, (self.side_len, self.side_len))
+        self.transform = cv2.getPerspectiveTransform(src, dst)
+
+    def draw_field(self, frame):
+        warped = cv2.warpPerspective(frame, self.transform, (self.side_len, self.side_len))
+        x = self.star_offset
+        y = x
+        for _ in range(self.star_count):
+            for _ in range(self.star_count):
+                cv2.circle(warped, (x, y), 5, (0, 0, 255), -1)
+                x += self.star_spacing
+            x = self.star_offset
+            y += self.star_spacing
+        return warped
 
     def cv_func(self, frame, is_done):
         if is_done:
@@ -70,9 +85,9 @@ class LocalizationAnalysis(object):
             return
         if self.update_check.check():
             if self.transform is None:
-                get_transform(frame)
+                self.get_transform(frame)
                 return
-            warped = cv2.warpPerspective(frame, self.transform, (self.side_len, self.side_len))
+            warped = self.draw_field(frame)
             self.out.write(warped)
             if self.show:
                 cv2.imshow('Warped', warped)
