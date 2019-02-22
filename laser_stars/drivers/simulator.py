@@ -18,6 +18,8 @@ class SimulatorDriver():
         if outfile:
             # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
             self.out = cv2.VideoWriter(self.outfile ,cv2.VideoWriter_fourcc(*"XVID"), fps, (width, height))
+        else:
+            self.out = None
         cv_loop.processing_list.append(self.cv_func)
 
     def move_to(self, x, y):
@@ -39,9 +41,10 @@ class SimulatorDriver():
         pass
 
     def cv_func(self, frame, is_done):
-        if is_done:
+        if is_done and self.out:
             self.out.release()
             return
         if self.update_check.check():
             cv2.imshow(self._WIN_NAME,self.img)
-            self.out.write(self.img)
+            if self.out:
+                self.out.write(self.img)

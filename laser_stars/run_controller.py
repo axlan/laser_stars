@@ -10,6 +10,7 @@ from laser_stars.drivers.simulator import SimulatorDriver
 from laser_stars.drivers.arduino_roll_pitch import ArduinoRollPitchDriver
 from laser_stars.analysis.tracker import TrackerAnalysis
 from laser_stars.analysis.long_exposure import LongExposureAnalysis
+from laser_stars.analysis.localisation import LocalizationAnalysis
 from laser_stars.opencv_loop import OpenCVLoop
 
 DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,
@@ -18,7 +19,8 @@ DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,
 CONTROLLERS = {'mark1': Mark1Controller}
 
 ANALYSIS = {'tracker': TrackerAnalysis,
-            'long_exposure': LongExposureAnalysis}
+            'long_exposure': LongExposureAnalysis,
+            'localization': LocalizationAnalysis}
 
 if len(sys.argv) != 3:
     print(f'Usage: {sys.argv[0]} CONFIG_JSON_FILE MOVEMENT_FILE')

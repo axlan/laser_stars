@@ -1,0 +1,27 @@
+{
+    "driver": "simulator",
+    "driver_args": {
+        "width": 512,
+        "height": 512,
+        "fps": 12
+    },
+    "controller": "mark1",
+    "controller_args": {
+        "update_rate": 0.001
+    },
+    "camera_args": {
+        "video_file": "/home/axlan/Downloads/VID_20190121_194819.mp4",
+        "cam_width": 1920,
+        "cam_height": 1080
+    },
+    "analysis": [
+        {
+            "name": "localization",
+            "args": {
+                "outfile": "out/localization.avi",
+                "side_len": 777,
+                "show": true
+            }
+        }
+    ]
+}

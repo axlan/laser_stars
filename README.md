@@ -14,6 +14,7 @@ Tool for running pattern file: `python3 -m laser_stars.run_controller configs/si
 
 ## Dependancies
 `sudo apt-get install python3-opencv`
+`sudo apt-get install libzbar-dev libzbar0`
 
 ## Reference Projects
 
@@ -26,6 +27,9 @@ Localization with QR codes:
 http://www.geduino.org/site/archives/258
 
 https://www.learnopencv.com/barcode-and-qr-code-scanner-using-zbar-and-opencv/
+
+https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
+
 
 ## Hardware Notes
 
