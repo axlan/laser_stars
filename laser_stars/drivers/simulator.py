@@ -1,12 +1,17 @@
+from math import cos, sin, radians
+from random import random
+
 import numpy as np
 import cv2
+
 from laser_stars.utils import FPSCheck
 
 class SimulatorDriver():
     _WIN_NAME = "sim_image"
-    def __init__(self, cv_loop, width, height, fps=10, outfile=None):
+    def __init__(self, cv_loop, width, height, scale=[1,1], orientation=0.0, noise=0, fps=10, outfile=None):
         self.running = True
         self.width = width
+        self.noise = noise
         self.height = height
         # Create a black image
         self.img = np.zeros((width, height, 3), np.uint8)
@@ -14,6 +19,10 @@ class SimulatorDriver():
         self.cur_y = 0
         self.is_on = False
         self.outfile = outfile
+        self.scale = np.array(scale) * np.array([self.width, self.height])
+        orientation = radians(orientation)
+        self.rotation = np.array([(cos(orientation), -sin(orientation)),
+                                  (sin(orientation), cos(orientation))])
         self.update_check = FPSCheck(fps)
         if outfile:
             # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
@@ -23,8 +32,12 @@ class SimulatorDriver():
         cv_loop.processing_list.append(self.cv_func)
 
     def move_to(self, x, y):
-        x_pos = int(x * self.width)
-        y_pos = int(y * self.width)
+        noise_x = (random() - .5) * self.noise
+        noise_y = (random() - .5) * self.noise
+        pos = (np.array([x + noise_x, y + noise_y])) * self.scale
+        pos = np.matmul(pos, self.rotation)      
+        x_pos = int(pos[0]) 
+        y_pos = int(pos[1])
         if self.is_on:
             # Draw a diagonal blue line with thickness of 5 px
             cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
