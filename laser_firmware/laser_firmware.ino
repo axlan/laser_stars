@@ -27,7 +27,7 @@ void setup() {
 void loop() {
   if (Serial.readBytes(message_buf, 3) == 3) {
     switch(message_buf[0]) {
-      uint16_t val = *(uint16_t*)(message_buf + 1)
+      uint16_t val = *(uint16_t*)(message_buf + 1);
       case CMD_ROLL: roll_servo.writeMicroseconds(val); break;
       case CMD_PITCH: pitch_servo.writeMicroseconds(val); break;
       case CMD_POWER: digitalWrite(RELAY_PIN, (val)?HIGH:LOW); break;

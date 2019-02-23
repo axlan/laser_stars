@@ -47,7 +47,7 @@ class ArduinoRollPitchDriver():
     def move_to(self, x, y):
         pitch = self._calc_angle_offset(x, self.h_width) + self.pitch_offset
         roll = self._calc_angle_offset(y, self.h_height) + self.roll_offset
-        self._send_cmd(self._CMD_ROLL, * self.roll_scale)
+        self._send_cmd(self._CMD_ROLL, roll * self.roll_scale)
         self._send_cmd(self._CMD_PITCH, pitch * self.pitch_scale)
 
     def set_power(self, is_on):
