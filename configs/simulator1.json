@@ -9,7 +9,7 @@
         "orientation": 25,
         "scale": [1.1, 0.8]
     },
-    "controller": "mark1",
+    "controller": "mark2",
     "controller_args": {
         "update_rate": 0.2
     },
