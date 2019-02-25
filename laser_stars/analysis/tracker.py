@@ -139,7 +139,7 @@ class TrackerAnalysis(object):
         if is_done:
             self.out.release()
             return
-        if self.update_check.check():
+        if frame is not None and self.update_check.check():
             self.detect(frame)
             self.out.write(frame)
             if self.show:

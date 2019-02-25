@@ -16,7 +16,7 @@ class OpenCVLoop(object):
         If the dot from the laser pointer doesn't fall within these values, it
         will be ignored.
         """
-
+        self.simulator = None
         self.running = True
         self.video_file = video_file
         self.cam_width = cam_width
@@ -31,14 +31,14 @@ class OpenCVLoop(object):
         """Perform camera setup for the device number (default device = 0).
         Returns a reference to the camera Capture object.
         """
-
+        self.capture = None
         if self.video_file:
             self.capture = cv2.VideoCapture(self.video_file)
             # Check if camera opened successfully
             if (self.capture.isOpened()== False): 
                 print("Error opening video stream or file")
                 sys.exit(1)
-        else:
+        elif self.device_num:
             try:
                 device = int(self.device_num)
                 sys.stdout.write("Using Camera Device: {0}\n".format(device))
@@ -76,6 +76,8 @@ class OpenCVLoop(object):
                 if not success:  # no image captured... end the processing
                     sys.stderr.write("Could not read camera frame. Quitting\n")
                     sys.exit(1)
+            elif self.simulator:
+                frame = self.simulator.img.copy()
             else:
                 frame = None
             for func in self.processing_list:

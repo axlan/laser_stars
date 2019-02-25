@@ -48,6 +48,8 @@ with open(sys.argv[2]) as fd:
 camera_args = config.get('camera_args', {})
 with OpenCVLoop(**camera_args) as cv_loop:
     with DRIVERS[config['driver']](cv_loop, **config['driver_args']) as driver:
+        if config['driver'] == 'simulator':
+            cv_loop.simulator = driver
         ctrl = CONTROLLERS[config['controller']](driver, cv_loop, **config['controller_args'])
         if 'analysis' in config:
             for analysis_conf in config['analysis']:

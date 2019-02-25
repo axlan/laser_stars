@@ -5,11 +5,29 @@
         "height": 512,
         "fps": 5,
         "noise": 0.02,
+        "trail": false,
         "orientation": 25,
         "scale": [1.1, 0.8]
     },
     "controller": "mark1",
     "controller_args": {
         "update_rate": 0.2
-    }
+    },
+    "camera_args": {
+        "cam_width": 512,
+        "cam_height": 512
+    },
+    "analysis": [
+        {
+            "name": "tracker",
+            "args": {
+                "hue_min": 80,
+                "hue_max": 160,
+                "sat_min": 0,
+                "sat_max": 255,
+                "show": true,
+                "outfile": "out/tracker.avi"
+            }
+        }
+    ]
 }

@@ -8,7 +8,8 @@ from laser_stars.utils import FPSCheck
 
 class SimulatorDriver():
     _WIN_NAME = "sim_image"
-    def __init__(self, cv_loop, width, height, scale=[1,1], orientation=0.0, noise=0, fps=10, outfile=None):
+    def __init__(self, cv_loop, width, height, trail=True, scale=[1,1], orientation=0.0, noise=0, fps=10, outfile=None):
+        self.trail = trail
         self.running = True
         self.width = width
         self.noise = noise
@@ -40,7 +41,11 @@ class SimulatorDriver():
         y_pos = int(pos[1])
         if self.is_on:
             # Draw a diagonal blue line with thickness of 5 px
-            cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
+            if self.trail:
+                cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
+            else:
+                self.img = np.zeros((self.width, self.height, 3), np.uint8)
+                cv2.circle(self.img, (self.cur_x,self.cur_y), 5, [255,0,0],-1)
         self.cur_x = x_pos
         self.cur_y = y_pos
 
