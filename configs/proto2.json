@@ -1,0 +1,36 @@
+{
+    "driver": "arduino_roll_pitch",
+    "driver_args": {
+        "roll_offset": 1024,
+        "pitch_offset": 950,
+        "roll_max": 10,
+        "pitch_max": 10,
+        "roll_scale": 10,
+        "pitch_scale": 10,
+        "verbose": false,
+        "com_port": "COM6"
+    },
+    "controller": "mark1",
+    "controller_args": {
+        "update_rate": 0.001
+    },
+    "camera_args": {
+        "video_file": "http://192.168.1.126:8080/video",
+        "cam_width": 1024,
+        "cam_height": 768
+    },
+    "analysis": [
+        {
+            "name": "tracker",
+            "args": {
+                "hue_min": 140,
+                "hue_max": 150,
+                "sat_min": 0,
+                "sat_max": 60,
+                "val_min": 254,
+                "val_max": 255,
+                "show": true
+            }
+        }
+    ]
+}

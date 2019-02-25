@@ -24,8 +24,8 @@ class ArduinoRollPitchDriver():
         self.h_width = math.tan(math.radians(pitch_max))
         self.h_height = math.tan(math.radians(roll_max))
         self.verbose = verbose
-        self.roll_scale = roll_scale
-        self.pitch_scale = pitch_scale
+        self.roll_scale = float(roll_scale)
+        self.pitch_scale = float(pitch_scale)
         if com_port:
             self.ser = serial.Serial(com_port, baudrate=115200, timeout=3)
             header = self.ser.read()
@@ -38,17 +38,17 @@ class ArduinoRollPitchDriver():
     def _calc_angle_offset(val, max_val):
         is_neg = val < .5
         distance = abs(val - .5) * max_val * 2
-        angle = round(math.degrees(math.atan2(distance, 1)))
+        angle = math.degrees(math.atan2(distance, 1))
         if is_neg:
             angle *= -1
         return angle
 
 
     def move_to(self, x, y):
-        pitch = self._calc_angle_offset(x, self.h_width) + self.pitch_offset
-        roll = self._calc_angle_offset(y, self.h_height) + self.roll_offset
-        self._send_cmd(self._CMD_ROLL, roll * self.roll_scale)
-        self._send_cmd(self._CMD_PITCH, pitch * self.pitch_scale)
+        pitch = self._calc_angle_offset(x, self.h_width) * self.roll_scale + self.pitch_offset
+        roll = self._calc_angle_offset(y, self.h_height) * self.pitch_scale + self.roll_offset
+        self._send_cmd(self._CMD_ROLL, round(roll))
+        self._send_cmd(self._CMD_PITCH, round(pitch))
 
     def set_power(self, is_on):
         self._send_cmd(self._CMD_POWER, int(is_on))

@@ -60,16 +60,16 @@ class LaserTracker(object):
         """Perform camera setup for the device number (default device = 0).
         Returns a reference to the camera Capture object.
         """
-        try:
-            device = int(self.device_num)
-            sys.stdout.write("Using Camera Device: {0}\n".format(device))
-        except (IndexError, ValueError):
-            # assume we want the 1st device
-            device = 0
-            sys.stderr.write("Invalid Device. Using default device 0\n")
+        # try:
+        #     device = int(self.device_num)
+        #     sys.stdout.write("Using Camera Device: {0}\n".format(device))
+        # except (IndexError, ValueError):
+        #     # assume we want the 1st device
+        #     device = 0
+        #     sys.stderr.write("Invalid Device. Using default device 0\n")
 
         # Try to start capturing frames
-        self.capture = cv2.VideoCapture(device)
+        self.capture = cv2.VideoCapture(self.device_num)
         if not self.capture.isOpened():
             sys.stderr.write("Failed to Open Capture device. Quitting.\n")
             sys.exit(1)
@@ -149,9 +149,9 @@ class LaserTracker(object):
                          int(moments["m01"] / moments["m00"])
             else:
                 center = int(x), int(y)
-
+            print(radius)
             # only proceed if the radius meets a minimum size
-            if radius > 10:
+            if radius > 1.8:
                 # draw the circle and centroid on the frame,
                 cv2.circle(frame, (int(x), int(y)), int(radius),
                            (0, 255, 255), 2)
@@ -265,7 +265,7 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--satmin',
                         default=100,
                         type=int,
-                        help='Saturation Minimum Threshold')
+                        help='Saturatio n Minimum Threshold')
     parser.add_argument('-S', '--satmax',
                         default=255,
                         type=int,
@@ -282,8 +282,6 @@ if __name__ == '__main__':
                         action='store_true',
                         help='Display Threshold Windows')
     parser.add_argument('-D', '--device',
-                        default=0,
-                        type=int,
                         help='Camera Device Number')
     params = parser.parse_args()
 

@@ -1,8 +1,8 @@
 {
     "driver": "arduino_roll_pitch",
     "driver_args": {
-        "roll_offset": 150,
-        "pitch_offset": 150,
+        "roll_offset": 1024,
+        "pitch_offset": 950,
         "roll_max": 10,
         "pitch_max": 10,
         "roll_scale": 10,
