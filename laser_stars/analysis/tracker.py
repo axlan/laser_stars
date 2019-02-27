@@ -8,7 +8,7 @@ from laser_stars.utils import FPSCheck
 class TrackerAnalysis(object):
 
     def __init__(self, cv_loop, hue_min=20, hue_max=160,
-                 sat_min=100, sat_max=255, val_min=200, val_max=256, outfile='out/tracker.avi', show=False):
+                 sat_min=100, sat_max=255, val_min=200, val_max=256, transform=None, side_len=None, outfile='out/tracker.avi', show=False):
         """
         HSV color space Threshold values for a RED laser pointer are determined
         by:
@@ -26,11 +26,19 @@ class TrackerAnalysis(object):
         self.val_max = val_max
         self.outfile = outfile
         self.show = show
+        self.transform = transform
+        self.side_len = side_len
         FPS = 10
         self.update_check = FPSCheck(FPS)
         self.cv_loop = cv_loop
+        if side_len is not None:
+            self.cam_width = side_len
+            self.cam_height = side_len
+        else:
+            self.cam_width = cv_loop.cam_width
+            self.cam_height = cv_loop.cam_height
         if outfile:
-            self.out = cv2.VideoWriter(self.outfile ,cv2.VideoWriter_fourcc(*'XVID'), FPS, (cv_loop.cam_width,cv_loop.cam_height))
+            self.out = cv2.VideoWriter(self.outfile ,cv2.VideoWriter_fourcc(*'XVID'), FPS, (self.cam_width,self.cam_height))
 
         self.channels = {
             'hue': None,
@@ -40,7 +48,7 @@ class TrackerAnalysis(object):
         }
 
         self.previous_position = None
-        self.trail = numpy.zeros((cv_loop.cam_height, cv_loop.cam_width, 3),
+        self.trail = numpy.zeros((self.cam_height, self.cam_width, 3),
                                  numpy.uint8)
         cv_loop.processing_list.append(self.cv_func)
 
@@ -140,6 +148,8 @@ class TrackerAnalysis(object):
             self.out.release()
             return
         if frame is not None and self.update_check.check():
+            if self.transform:
+                frame = cv2.warpPerspective(frame, self.transform, (self.side_len, self.side_len))
             self.detect(frame)
             self.out.write(frame)
             if self.show:

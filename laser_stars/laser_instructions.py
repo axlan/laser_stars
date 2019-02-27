@@ -57,7 +57,7 @@ def run_test():
                Wait(1),
                SetPower(True),
                MoveTo(0, 1, .3),
-               MoveTo(1, 1, .3),
+               MoveTo(1, -1, .3),
                MoveTo(1, 0, .3),
                MoveTo(0, 0, .3),
                Wait(1),

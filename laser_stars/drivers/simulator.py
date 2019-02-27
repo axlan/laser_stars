@@ -8,10 +8,11 @@ from laser_stars.utils import FPSCheck
 
 class SimulatorDriver():
     _WIN_NAME = "sim_image"
-    def __init__(self, cv_loop, width, height, trail=True, scale=[1,1], orientation=0.0, noise=0, fps=10, outfile=None):
+    def __init__(self, cv_loop, width, height, offset=[0,0], trail=True, scale=[1,1], orientation=0.0, noise=0, fps=10, outfile=None):
         self.trail = trail
         self.running = True
         self.width = width
+        self.offset = np.array(offset)
         self.noise = noise
         self.height = height
         # Create a black image
@@ -35,8 +36,9 @@ class SimulatorDriver():
     def move_to(self, x, y):
         noise_x = (random() - .5) * self.noise
         noise_y = (random() - .5) * self.noise
-        pos = (np.array([x + noise_x, y + noise_y])) * self.scale
-        pos = np.matmul(pos, self.rotation)      
+        noise = np.array([noise_x, noise_y])
+        pos = (np.array([x, y]) + noise ) * self.scale
+        pos = np.matmul(pos, self.rotation) + self.offset * self.scale
         x_pos = int(pos[0]) 
         y_pos = int(pos[1])
         if self.is_on:
@@ -45,7 +47,7 @@ class SimulatorDriver():
                 cv2.line(self.img,(self.cur_x,self.cur_y),(x_pos,y_pos),(255,0,0),5)
             else:
                 self.img = np.zeros((self.width, self.height, 3), np.uint8)
-                cv2.circle(self.img, (self.cur_x,self.cur_y), 5, [255,0,0],-1)
+                cv2.circle(self.img, (x_pos,y_pos), 5, [255,0,0],-1)
         self.cur_x = x_pos
         self.cur_y = y_pos
 

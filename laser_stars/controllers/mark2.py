@@ -26,7 +26,7 @@ class Mark2Controller():
                     x_dist = instr.x - start_x
                     y_dist = instr.y - start_y
                     total_dist = dist(x_dist, y_dist)
-                    duration = total_dist / instr.vel
+                    duration = max(total_dist / instr.vel, 0.01)
                     percent = 0
                     while percent < 1:
                         percent = (datetime.now() - start_time).total_seconds() / duration

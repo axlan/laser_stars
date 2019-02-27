@@ -7,6 +7,7 @@ import threading
 from laser_stars.laser_instructions import read_instr
 from laser_stars.controllers.mark1 import Mark1Controller
 from laser_stars.controllers.mark2 import Mark2Controller
+from laser_stars.controllers.calibrate import CalibrateController
 from laser_stars.drivers.simulator import SimulatorDriver
 from laser_stars.drivers.arduino_roll_pitch import ArduinoRollPitchDriver
 from laser_stars.analysis.tracker import TrackerAnalysis
@@ -18,7 +19,8 @@ DRIVERS = {'arduino_roll_pitch': ArduinoRollPitchDriver,
            'simulator': SimulatorDriver}
 
 CONTROLLERS = {'mark1': Mark1Controller,
-               'mark2': Mark2Controller,}
+               'mark2': Mark2Controller,
+               'calibrate': CalibrateController,}
 
 ANALYSIS = {'tracker': TrackerAnalysis,
             'long_exposure': LongExposureAnalysis,
