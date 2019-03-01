@@ -7,8 +7,8 @@
         "fps": 5,
         "noise": 0.0001,
         "trail": false,
-        "orientation": 5,
-        "scale": [0.6, 0.8]
+        "orientation": 95,
+        "scale": [0.4, 0.3]
     },
     "controller": "calibrate",
     "controller_args": {

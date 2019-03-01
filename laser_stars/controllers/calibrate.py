@@ -40,11 +40,15 @@ class CalibrateController():
         return x, y
 
     @staticmethod
-    def angle(m):
-        a = math.atan(m)
+    def angle(pt1, pt2):
+        a = math.atan2((pt2[1] - pt1[1]), (pt2[0] - pt1[0]))
         if a < 0:
             a += 2.0 * math.pi
-        return math.atan(m)
+        return a
+
+    @staticmethod
+    def diff_angles(a1, a2):
+        return math.pi - abs(abs(a1 - a2) - math.pi); 
 
     def run(self, instrs):
         VALS = [-.4, .4]
@@ -89,10 +93,12 @@ class CalibrateController():
             print(pt21, pt22, m2, c2)
             intercept = self.intercept(m1, c1, m2, c2)
             print(intercept)
-            a1 = math.degrees(math.atan2((pt12[1] - pt11[1]), (pt12[0] - pt11[0])))
-            a2 = math.degrees(math.atan2((pt22[1] - pt21[1]), (pt22[0] - pt21[0])))
-            print(a1)
-            print(a2)
+            a1 = self.angle(pt11, pt12)
+            a2 = self.angle(pt21, pt22)
+            diff_angle = self.diff_angles(a1, a2)
+            print(math.degrees(a1))
+            print(math.degrees(a2))
+            print(math.degrees(diff_angle))
             
 
             self.driver.move_to(0, 0)

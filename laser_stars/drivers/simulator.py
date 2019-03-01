@@ -21,7 +21,8 @@ class SimulatorDriver():
         self.cur_y = 0
         self.is_on = False
         self.outfile = outfile
-        self.scale = np.array(scale) * np.array([self.width, self.height])
+        self.size = np.array([self.width, self.height])
+        self.scale = np.array(scale)
         orientation = radians(orientation)
         self.rotation = np.array([(cos(orientation), -sin(orientation)),
                                   (sin(orientation), cos(orientation))])
@@ -37,8 +38,8 @@ class SimulatorDriver():
         noise_x = (random() - .5) * self.noise
         noise_y = (random() - .5) * self.noise
         noise = np.array([noise_x, noise_y])
-        pos = (np.array([x, y]) + noise ) * self.scale
-        pos = np.matmul(pos, self.rotation) + self.offset * self.scale
+        pos = np.matmul(np.array([x, y]), self.rotation) * self.scale
+        pos = (pos + self.offset + noise) * self.size
         x_pos = int(pos[0]) 
         y_pos = int(pos[1])
         if self.is_on:
