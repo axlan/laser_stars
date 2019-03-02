@@ -61,18 +61,17 @@ class CalibrateController():
         CAL_SCALE = .4
         VALS = [-CAL_SCALE, CAL_SCALE]
         SAMPLES = 3
-        MOVE_TIME = .2
-        SAMPLE_WAIT = .2
+        MOVE_TIME = 1
+        SAMPLE_WAIT = 1
         if self.calibration is None:
             if self.localize:
-                localizer = LocalizationAnalysis(self.cv_loop, **localization_conf)
+                localizer = LocalizationAnalysis(self.cv_loop, **self.localization_conf)
                 while localizer.transform is None:
                     time.sleep(1)
                 self.tracker_conf['transform'] = localizer.transform
-                self.tracker_conf['side_len'] = localization_conf['side_len']
+                self.tracker_conf['side_len'] = self.localization_conf['side_len']
             tracker = TrackerAnalysis(self.cv_loop, **self.tracker_conf)
             
-
             def draw_line(x_not_y):
                 measurements = []
                 self.driver.move_to(0, 0)

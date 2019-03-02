@@ -36,11 +36,8 @@ class ArduinoRollPitchDriver():
 
     @staticmethod
     def _calc_angle_offset(val, max_val):
-        is_neg = val < .5
-        distance = abs(val - .5) * max_val * 2
-        angle = math.degrees(math.atan2(distance, 1))
-        if is_neg:
-            angle *= -1
+        distance = val * max_val / 2
+        angle = math.degrees(math.atan(distance))
         return angle
 
 

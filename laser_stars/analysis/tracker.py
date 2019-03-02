@@ -148,7 +148,7 @@ class TrackerAnalysis(object):
             self.out.release()
             return
         if frame is not None and self.update_check.check():
-            if self.transform:
+            if self.transform is not None:
                 frame = cv2.warpPerspective(frame, self.transform, (self.side_len, self.side_len))
             self.detect(frame)
             self.out.write(frame)

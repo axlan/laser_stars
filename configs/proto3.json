@@ -1,0 +1,33 @@
+{
+    "driver": "arduino_roll_pitch",
+    "driver_args": {
+        "roll_offset": 1024,
+        "pitch_offset": 950,
+        "roll_max": 10,
+        "pitch_max": 10,
+        "roll_scale": 10,
+        "pitch_scale": 10,
+        "verbose": true,
+        "com_port": "COM6"
+    },
+    "controller": "calibrate",
+    "controller_args": {
+        "update_rate": 0.001,
+        "localize": true,
+        "localization_conf": {
+            "side_len": 777
+        },
+        "tracker_conf": {
+            "hue_min": 80,
+            "hue_max": 160,
+            "sat_min": 0,
+            "sat_max": 255,
+            "show": true
+        }
+    },
+    "camera_args": {
+        "video_file": "http://192.168.1.126:8080/video",
+        "cam_width": 1024,
+        "cam_height": 768
+    }
+}
