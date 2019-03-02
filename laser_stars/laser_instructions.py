@@ -1,5 +1,7 @@
 """laser_instructions.py: Laser control instructions"""
 
+import numpy as np
+
 # Movement is from x=0,y=0 to x=1,y=1 scaled to drawing space. Velocity is in same units / second
 # Velocity must be > 0
 class MoveTo():
@@ -11,6 +13,15 @@ class MoveTo():
 
     def __repr__(self):
         return f'{self.__NAME__} {self.x} {self.y} {self.vel}'
+
+    @property
+    def pos(self):
+        return np.array([self.x, self.y])
+
+    @pos.setter
+    def pos(self, pos):
+        self.x = pos[0]
+        self.y = pos[1]
 
     def write(self, fd):
         fd.write(f'{self.__repr__()}\n')

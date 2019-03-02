@@ -3,24 +3,12 @@
     "driver_args": {
         "width": 512,
         "height": 512,
-        "offset": [0.5, 0.5],
         "fps": 5,
-        "noise": 0.0001,
-        "trail": false,
-        "orientation": 95,
-        "scale": [0.4, 0.3]
+        "trail": false
     },
-    "controller": "calibrate",
+    "controller": "mark1",
     "controller_args": {
-        "update_rate": 0.2,
-        "tracker_conf": {
-            "hue_min": 80,
-            "hue_max": 160,
-            "sat_min": 0,
-            "sat_max": 255,
-            "show": true,
-            "outfile": "out/tracker.avi"
-        }
+        "update_rate": 0.2
     },
     "camera_args": {
         "cam_width": 512,

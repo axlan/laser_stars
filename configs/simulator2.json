@@ -1,0 +1,30 @@
+{
+    "driver": "simulator",
+    "driver_args": {
+        "width": 512,
+        "height": 512,
+        "offset": [0.5, 0.5],
+        "fps": 5,
+        "noise": 0.000,
+        "trail": false,
+        "orientation": 0,
+        "scale": [0.8, 0.3]
+    },
+    "controller": "calibrate",
+    "controller_args": {
+        "update_rate": 0.2,
+        "tracker_conf": {
+            "hue_min": 80,
+            "hue_max": 160,
+            "sat_min": 0,
+            "sat_max": 255,
+            "show": true,
+            "outfile": "out/tracker.avi"
+        },
+        "calibration": {"offset": [0.5, 0.5], "scale": [0.8, 0.3], "rotation": 0}
+    },
+    "camera_args": {
+        "cam_width": 512,
+        "cam_height": 512
+    }
+}

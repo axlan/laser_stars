@@ -38,8 +38,10 @@ class SimulatorDriver():
         noise_x = (random() - .5) * self.noise
         noise_y = (random() - .5) * self.noise
         noise = np.array([noise_x, noise_y])
-        pos = np.matmul(np.array([x, y]), self.rotation) * self.scale
-        pos = (pos + self.offset + noise) * self.size
+        pos = np.array([x, y]) * self.scale
+        pos = np.matmul(pos, self.rotation)
+        pos += self.offset 
+        pos = (pos + noise) * self.size
         x_pos = int(pos[0]) 
         y_pos = int(pos[1])
         if self.is_on:
