@@ -5,10 +5,10 @@
         "height": 512,
         "offset": [0.5, 0.5],
         "fps": 5,
-        "noise": 0.000,
+        "noise": 0.01,
         "trail": false,
-        "orientation": 0,
-        "scale": [0.8, 0.3]
+        "orientation": 45,
+        "scale": [0.3, 1.1]
     },
     "controller": "calibrate",
     "controller_args": {
@@ -20,8 +20,7 @@
             "sat_max": 255,
             "show": true,
             "outfile": "out/tracker.avi"
-        },
-        "calibration": {"offset": [0.5, 0.5], "scale": [0.8, 0.3], "rotation": 0}
+        }
     },
     "camera_args": {
         "cam_width": 512,

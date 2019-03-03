@@ -124,7 +124,7 @@ class CalibrateController():
 
 
 
-        angle = math.radians(self.calibration['rotation'])
+        angle = -math.radians(self.calibration['rotation'])
         rotation = np.array([(math.cos(angle), -math.sin(angle)),
                               (math.sin(angle), math.cos(angle))])
         offset = np.array(self.calibration['offset'])
@@ -133,9 +133,9 @@ class CalibrateController():
         for instr in instrs:
             if type(instr) == MoveTo:
                 pos = instr.pos
-                pos /= scale
+                pos = pos - offset
                 pos = np.matmul(pos, rotation)
-                pos -= offset
+                pos /= scale
                 instr.pos = pos
 
                 if self.cur_x is None:
