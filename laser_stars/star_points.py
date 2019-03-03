@@ -13,7 +13,7 @@ total_len = CORNER_OFFSET * 2 + STAR_OFFSET * (STARS -1)
 for i in range(STARS):
     for k in range(STARS):
         x = i * STAR_OFFSET + CORNER_OFFSET
-        x = x / total_len - .5
+        x = x / total_len
         y = k * STAR_OFFSET + CORNER_OFFSET
-        y = y / total_len - .5
+        y = y / total_len
         print('MoveTo {} {} 0.1'.format(x, y))
