@@ -5,9 +5,9 @@
         "pitch_offset": 950,
         "roll_max": 10,
         "pitch_max": 10,
-        "roll_scale": 10,
-        "pitch_scale": 10,
-        "verbose": true,
+        "roll_scale": 50,
+        "pitch_scale": 50,
+        "verbose": false,
         "com_port": "COM6"
     },
     "controller": "calibrate",
@@ -22,8 +22,12 @@
             "hue_max": 160,
             "sat_min": 0,
             "sat_max": 255,
-            "show": true
-        }
+            "val_min": 254,
+            "val_max": 255,
+            "show": true,
+            "outfile": "out/test3.avi"
+        },
+        "calibration": {"offset": [0.4087088103571304, 0.39946283359650386], "scale": [0.7566019603147773, 0.7110447547755211], "rotation": 89.0}
     },
     "camera_args": {
         "video_file": "http://192.168.1.126:8080/video",
